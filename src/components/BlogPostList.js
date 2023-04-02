@@ -1,6 +1,12 @@
 import React from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
 
 class BlogPostList extends React.Component {
   constructor(props) {
@@ -38,21 +44,42 @@ class BlogPostList extends React.Component {
   render() {
     return (
       <div>
-        <h2>All Blog Posts</h2>
-        <ul>
+        <Typography variant="h4" component="h2" gutterBottom>
+          All Blog Posts
+        </Typography>
+        <Grid container spacing={4}>
           {this.state.blogPosts.map((blogPost) => (
-            <li key={blogPost.id}>
-              <h3>
-                <Link to={`/blogposts/${blogPost.id}`}>{blogPost.title}</Link>
-              </h3>
-              <p>{blogPost.content}</p>
-              <small>{new Date(blogPost.createdAt).toLocaleString()}</small>
-              <button onClick={() => this.handleDelete(blogPost.id)}>
-                Delete
-              </button>
-            </li>
+            <Grid item xs={12} sm={6} md={4} key={blogPost.id}>
+              <Paper elevation={3}>
+                <Box p={2}>
+                  <Typography variant="h5" component="h3">
+                    <Link
+                      component={RouterLink}
+                      to={`/blogposts/${blogPost.id}`}
+                      color="inherit"
+                      underline="none"
+                    >
+                      {blogPost.title}
+                    </Link>
+                  </Typography>
+                  <Typography variant="body1" gutterBottom>
+                    {blogPost.content}
+                  </Typography>
+                  <Typography variant="caption" display="block" gutterBottom>
+                    {new Date(blogPost.createdAt).toLocaleString()}
+                  </Typography>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => this.handleDelete(blogPost.id)}
+                  >
+                    Delete
+                  </Button>
+                </Box>
+              </Paper>
+            </Grid>
           ))}
-        </ul>
+        </Grid>
       </div>
     );
   }
