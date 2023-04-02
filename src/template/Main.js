@@ -23,11 +23,24 @@ function Main(props) {
         {title}
       </Typography>
       <Divider />
-      {posts.map((post) => (
-        <Markdown className="markdown" key={post.substring(0, 40)}>
-          {post}
-        </Markdown>
-      ))}
+      {posts.map((post) => {
+        const formattedDate = new Date(post.createdAt).toLocaleDateString(
+          "en-US",
+          {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          }
+        );
+
+        return (
+          <div key={post.id} className="mb-4">
+            <h2 className="text-xl font-semibold mb-1">{post.title}</h2>
+            <p className="italic">{formattedDate}</p>
+            <p>{post.content}</p>
+          </div>
+        );
+      })}
     </Grid>
   );
 }

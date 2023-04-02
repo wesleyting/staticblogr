@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-function CreateBlogPost({ apiUrl }) {
+function CreateBlogPost({ apiUrl, onSuccess }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
@@ -11,7 +11,7 @@ function CreateBlogPost({ apiUrl }) {
       .post(`${apiUrl}/blogposts`, { title, content })
       .then((response) => {
         console.log(response.data);
-        window.location.reload(); // refresh the page
+        onSuccess(response.data.id); // Pass the newly created blog post's ID
       })
       .catch((error) => {
         console.log(error);
