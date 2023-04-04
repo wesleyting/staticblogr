@@ -4,7 +4,7 @@ import axios from "axios";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
-import GitHubIcon from "@mui/icons-material/GitHub";
+import InstagramIcon from "@mui/icons-material/Instagram";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -14,13 +14,10 @@ import FeaturedPost from "./FeaturedPost";
 import Main from "./Main";
 import Sidebar from "./Sidebar";
 import Footer from "./Footer";
-import post1 from "./blog-post.1.md";
-import post2 from "./blog-post.2.md";
-import post3 from "./blog-post.3.md";
 import { API_URL } from "../globals/config";
 
 const sections = [
-  { title: "Create Post", url: "/create-post" },
+  { title: "Technology", url: "#" },
   { title: "Design", url: "#" },
   { title: "Culture", url: "#" },
   { title: "Business", url: "#" },
@@ -32,75 +29,107 @@ const sections = [
   { title: "Travel", url: "#" },
 ];
 
-const mainFeaturedPost = {
-  title: "Example of Client Website",
-  description:
-    "The purose is to swiftly build a client's website using any template, but having the flexibility of adding your own front-end UI for a blog. ",
-  image: "https://source.unsplash.com/random",
-  imageText: "main image description",
-  linkText: "Continue reading…",
-};
-
-const featuredPosts = [
+export const presetBlogPosts = [
   {
-    title: "Featured post",
-    date: "Nov 12",
-    description:
-      "This is a wider card with supporting text below as a natural lead-in to additional content.",
-    image: "https://source.unsplash.com/random",
-    imageLabel: "Image Text",
+    id: "preset-1",
+    title: "Preset Blog Post 1",
+    content: "This is a preset blog post.",
+    createdAt: new Date(2021, 5, 16),
+    isFeatured: false,
+    imageText: "Featured post image",
   },
   {
-    title: "Post title",
-    date: "Nov 11",
-    description:
-      "This is a wider card with supporting text below as a natural lead-in to additional content.",
-    image: "https://source.unsplash.com/random",
-    imageLabel: "Image Text",
+    id: "preset-2",
+    title: "Preset Blog Post 2",
+    content: "This is another preset blog post.",
+    createdAt: new Date(2022, 8, 25),
+    isFeatured: false,
+    imageText: "Featured post image",
+  },
+  {
+    id: "preset-3",
+    title: "Preset Blog Post 3",
+    content: "This is another preset blog post.",
+    createdAt: new Date(2023, 2, 7),
+    isFeatured: false,
+    imageText: "Featured post image",
   },
 ];
 
-const posts = [post1, post2, post3];
-
-const sidebar = {
-  title: "About",
+const mainFeaturedPost = {
+  title: "Example Freelance Client Website",
   description:
-    "Etiam porta sem malesuada magna mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.",
-  archives: [
-    { title: "March 2020", url: "#" },
-    { title: "February 2020", url: "#" },
-    { title: "January 2020", url: "#" },
-    { title: "November 1999", url: "#" },
-    { title: "October 1999", url: "#" },
-    { title: "September 1999", url: "#" },
-    { title: "August 1999", url: "#" },
-    { title: "July 1999", url: "#" },
-    { title: "June 1999", url: "#" },
-    { title: "May 1999", url: "#" },
-    { title: "April 1999", url: "#" },
-  ],
-  social: [
-    { name: "GitHub", icon: GitHubIcon },
-    { name: "Twitter", icon: TwitterIcon },
-    { name: "Facebook", icon: FacebookIcon },
-  ],
+    "The function is to swiftly build a client's website using any template, but having the flexibility of adding your own front-end UI for a blog while using an API for your own back-end. ",
+  image: "https://source.unsplash.com/random?city",
+  imageText: "main image description",
 };
+
+function generateArchiveList(posts) {
+  const archives = {};
+
+  posts.forEach((post) => {
+    const date = new Date(post.createdAt);
+    const monthYear = `${date.toLocaleString("default", {
+      month: "long",
+    })} ${date.getFullYear()}`;
+
+    if (archives[monthYear]) {
+      archives[monthYear].push(post);
+    } else {
+      archives[monthYear] = [post];
+    }
+  });
+
+  return Object.entries(archives).map(([title, posts]) => ({
+    title,
+    url: "#",
+    posts,
+  }));
+}
 
 const theme = createTheme();
 
 export default function Blog() {
-  const [blogPosts, setBlogPosts] = useState([]);
+  const [blogPosts, setBlogPosts] = useState([...presetBlogPosts]);
+  const [sidebar, setSidebar] = useState({
+    title: "About",
+    description:
+      "Etiam porta sem malesuada magna mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.",
+    archives: [],
+    social: [
+      { name: "Instagram", icon: InstagramIcon },
+      { name: "Twitter", icon: TwitterIcon },
+      { name: "Facebook", icon: FacebookIcon },
+    ],
+  });
 
   useEffect(() => {
     axios
       .get(`${API_URL}/blogposts`)
       .then((response) => {
-        setBlogPosts(response.data);
+        const fetchedPosts = response.data.map((post) => {
+          return {
+            ...post,
+            image: "https://source.unsplash.com/random/160x240",
+            imageText: "Featured post image",
+          };
+        });
+        const updatedPosts = [...presetBlogPosts, ...fetchedPosts];
+        setBlogPosts(updatedPosts);
+
+        const archives = generateArchiveList(updatedPosts);
+        setSidebar((prevSidebar) => ({ ...prevSidebar, archives }));
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
+
+  const featuredBlogPosts = blogPosts.filter((post) => post.isFeatured);
+
+  const sortedBlogPosts = [...blogPosts].sort((a, b) => {
+    return new Date(b.createdAt) - new Date(a.createdAt);
+  });
 
   return (
     <ThemeProvider theme={theme}>
@@ -110,12 +139,12 @@ export default function Blog() {
         <main>
           <MainFeaturedPost post={mainFeaturedPost} />
           <Grid container spacing={4}>
-            {featuredPosts.map((post) => (
-              <FeaturedPost key={post.title} post={post} />
+            {featuredBlogPosts.map((post) => (
+              <FeaturedPost key={post.id} post={post} />
             ))}
           </Grid>
           <Grid container spacing={5} sx={{ mt: 3 }}>
-            <Main title="From the firehose" posts={blogPosts} />
+            <Main title="Stay in the know." posts={sortedBlogPosts} />
             <Sidebar
               title={sidebar.title}
               description={sidebar.description}
