@@ -14,16 +14,17 @@ function Header(props) {
     <React.Fragment>
       <Toolbar sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Button size="small">Subscribe</Button>
-        <Typography
-          component="h2"
+        <Link
+          component="a"
           variant="h5"
           color="inherit"
           align="center"
           noWrap
-          sx={{ flex: 1 }}
+          sx={{ flex: 1, textDecoration: "none" }}
+          href="/"
         >
           {title}
-        </Typography>
+        </Link>
         <IconButton>
           <SearchIcon />
         </IconButton>
@@ -52,6 +53,10 @@ function Header(props) {
     </React.Fragment>
   );
 }
+
+Header.defaultProps = {
+  sections: [],
+};
 
 Header.propTypes = {
   sections: PropTypes.arrayOf(
