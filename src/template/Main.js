@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
-import Markdown from "./Markdown";
+import { Link } from "react-router-dom";
 
 function Main(props) {
   const { posts, title } = props;
@@ -16,6 +16,19 @@ function Main(props) {
       sx={{
         "& .markdown": {
           py: 3,
+        },
+        "& .blog-post": {
+          marginBottom: "2rem",
+        },
+        "& .blog-title": {
+          fontSize: "1.8rem",
+          fontWeight: "400",
+          marginTop: "0.5rem",
+          textDecoration: "underline",
+        },
+        "& .blog-date": {
+          marginBottom: "0.5rem",
+          fontStyle: "italic",
         },
       }}
     >
@@ -34,9 +47,11 @@ function Main(props) {
         );
 
         return (
-          <div key={post.id} className="mb-4">
-            <h2 className="text-xl font-semibold mb-1">{post.title}</h2>
-            <p className="italic">{formattedDate}</p>
+          <div key={post.id} className="blog-post">
+            <h2 className="blog-title">
+              <Link to={`/blog/${post.id}`}>{post.title}</Link>
+            </h2>
+            <p className="blog-date">{formattedDate}</p>
             <p>{post.content}</p>
           </div>
         );
