@@ -9,7 +9,11 @@ function BlogPostList({ apiUrl }) {
     axios
       .get(`${apiUrl}/blogposts`)
       .then((response) => {
-        setPosts(response.data);
+        setPosts(
+          response.data.sort(
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+          )
+        );
       })
       .catch((error) => {
         console.log(error);
