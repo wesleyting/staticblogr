@@ -11,7 +11,7 @@ function CreateBlogPost({ apiUrl, onSuccess }) {
       .post(`${apiUrl}/blogposts`, { title, content })
       .then((response) => {
         console.log(response.data);
-        onSuccess(response.data.id); // Pass the newly created blog post's ID
+        onSuccess(response.data.id);
       })
       .catch((error) => {
         console.log(error);

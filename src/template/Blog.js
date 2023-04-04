@@ -31,7 +31,7 @@ const sections = [
 
 export const presetBlogPosts = [
   {
-    id: "preset-1",
+    id: "123",
     title: "Preset Blog Post 1",
     content: "This is a preset blog post.",
     createdAt: new Date(2021, 5, 16),
@@ -39,7 +39,7 @@ export const presetBlogPosts = [
     imageText: "Featured post image",
   },
   {
-    id: "preset-2",
+    id: "1234",
     title: "Preset Blog Post 2",
     content: "This is another preset blog post.",
     createdAt: new Date(2022, 8, 25),
@@ -47,7 +47,7 @@ export const presetBlogPosts = [
     imageText: "Featured post image",
   },
   {
-    id: "preset-3",
+    id: "12345",
     title: "Preset Blog Post 3",
     content: "This is another preset blog post.",
     createdAt: new Date(2023, 2, 7),
@@ -110,6 +110,7 @@ export default function Blog() {
         const fetchedPosts = response.data.map((post) => {
           return {
             ...post,
+            createdAt: post.createdAt.toString(),
             image: "https://source.unsplash.com/random/160x240",
             imageText: "Featured post image",
           };
