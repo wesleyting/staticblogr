@@ -10,12 +10,14 @@ function CreatePostPage({ apiUrl }) {
   };
 
   return (
-    <div>
-      <h1>Create a New Blog Post</h1>
-      <CreateBlogPost
-        apiUrl={apiUrl}
-        onSuccess={handleSuccessfulPostCreation}
-      />
+    <div className="max-w-7xl mx-auto mt-12 px-4 sm:px-6 lg:px-8">
+      <h1 className="text-4xl font-bold mb-8">Create a New Blog Post</h1>
+      <div className="bg-white shadow-md rounded p-6">
+        <CreateBlogPost
+          apiUrl={apiUrl}
+          onSuccess={handleSuccessfulPostCreation}
+        />
+      </div>
     </div>
   );
 }
