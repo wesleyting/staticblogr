@@ -111,7 +111,7 @@ export default function Blog() {
           return {
             ...post,
             createdAt: post.createdAt.toString(),
-            image: "https://source.unsplash.com/random/160x240",
+            image: "https://source.unsplash.com/random/160x240/?scenery",
             imageText: "Featured post image",
           };
         });

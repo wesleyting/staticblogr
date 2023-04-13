@@ -36,7 +36,10 @@ function BlogPostPage() {
       <Container maxWidth="lg">
         <div style={{ margin: "0 auto", maxWidth: "800px" }}>
           <img
-            src={blogPost.image || "https://source.unsplash.com/random/800x400"}
+            src={
+              blogPost.image ||
+              "https://source.unsplash.com/random/800x400/?city"
+            }
             alt={blogPost.imageText}
             style={{ width: "100%", display: "block", margin: "0 auto" }}
           />
